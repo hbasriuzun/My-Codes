@@ -3,6 +3,7 @@
 typedef struct {
     float lenght;
     float width;
+    float diagonal;
 }rectangle;
 
 int main()
@@ -14,5 +15,7 @@ int main()
     ptr->lenght = 13;
     printf("\n%.1f",a.lenght);
 
+    printf("\n%d",sizeof(ptr));
+    printf("\n%d",sizeof(a));
     return 0;
 }
