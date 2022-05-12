@@ -45,3 +45,4 @@ point_s_inside_or_outside(circle1);
 
 return 0;
 }
+4 options (A,B,C,D) to answer. Each correct question has 1 points and four incorrect questions eliminates 1 point. Write a C program that reads the answer key as a string and the number and answers of 3 students, then prints each student’s number and grade. Use an appropriate struct.
