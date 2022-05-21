@@ -9,7 +9,7 @@ int main(int argc, char const *argv[])
 
     int number1;
 
-    cout << "Please enter the number" << endl;
+    cout << "Please enter the number." << endl;
     cin >> number1;
 
     if (number1 % 2 == 0)
