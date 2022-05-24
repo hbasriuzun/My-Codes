@@ -1,12 +1,24 @@
 #include <stdio.h>
+#include <iostream>
 #include <math.h>
+#include <stdlib.h>
+#include <new>
 
-void F(int N,int main[N][N], int M,int Operation[M][M]); 
-int carp(int N,int main[N][N], int M,int Operation[M][M]);
+using namespace std;
 
-int main(){
-    int N,M,i,j;
-    scanf("%d %d",&N,&M);
+void F(int N,int main[N][N], int M,int** Operation); 
+int carp(int N,int main[N][N], int M,int** Operation);
+
+int main()
+    {
+    int N,M,i,j,index;
+
+    
+    std::cin >> M >> N;
+    int** matrix = new int*[N];
+    for (int i = 0; i < M; ++i)
+    matrix[i] = new int[N];
+
     int main[N][N];
     float Operation[M][M];
 
@@ -22,15 +34,16 @@ int main(){
         }
     }
 
+    
 
-
-    F(N,main[N][N],M,Operation[M][M]);
+    F(N,main[N][N],M,matrix);
 
 
     return 0;
 }
 
-void F(int N,int main[N][N], int M,int Operation[M][M]){
+void F(int N, int main[N][N], int M, int** Operation)
+{
     int i,j,a;
     if(N%M==0 && N%2!=0 && M%2!=0){
         a=(int)M/2;
@@ -56,7 +69,8 @@ void F(int N,int main[N][N], int M,int Operation[M][M]){
 
 
 
-int carp(int N,int main[N][N], int M,int Operation[M][M]){
+int carp(int N,int main[N][N], int M,int** Operation)
+{
     int i,j,a,b;
     a=(int)M/2;
     for(i=0;i<M;i++){
