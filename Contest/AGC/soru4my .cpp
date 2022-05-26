@@ -26,7 +26,7 @@ int main()
         for(j=0;j<N;j++){
             scanf("%d",main[i][j]);
         }
-    }
+    }ov
 
     for(i=0;i<M;i++){
         for(j=0;j<M;j++){

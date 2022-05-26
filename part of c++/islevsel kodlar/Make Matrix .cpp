@@ -14,6 +14,13 @@ int main(int argc, char const *argv[])
     name[0][0] = 1; 
     name[nRows-1][nCols-1] = 1; 
 
+    int* tmp = new int[3];
+    if (tmp == NULL)
+    {
+        free(tmp);
+        return 1;
+    }
+
 
     cout << name[0][0] << endl;
     delete[] name;
