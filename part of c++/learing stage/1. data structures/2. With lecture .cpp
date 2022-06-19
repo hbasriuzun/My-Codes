@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 
 typedef struct node
 {
@@ -11,7 +12,7 @@ typedef struct node
 int main(int argc, char const *argv[])
 {
     
-    node n;
+    node *n;
 
 
     if (n != NULL)
