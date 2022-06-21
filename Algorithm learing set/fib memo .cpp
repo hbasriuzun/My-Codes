@@ -33,7 +33,7 @@ long fib(long n)
 // Driver Code
 int main()
 {
-    long n = 6;
+    long n = 3;
     printf("%d", fib(n));
     return 0;
 }
