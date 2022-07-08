@@ -25,7 +25,7 @@
         },
         {
             "type": "cppbuild",
-            "label": "C/C++: g++.exe etkin dosyayı derle",
+            "label": "C/C++: g++.exe etkin dosyayı derle.",
             "command": "C:\\msys64\\mingw64\\bin\\g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
