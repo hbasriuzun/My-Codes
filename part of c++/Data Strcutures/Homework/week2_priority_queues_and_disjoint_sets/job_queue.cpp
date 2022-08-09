@@ -8,6 +8,12 @@ using std::cin;
 using std::cout;
 using std::swap;
 
+/*typedef struct process
+{
+  int workers;
+  long long next_time;
+}process;*/
+
 
 class process{
   public:
@@ -16,7 +22,7 @@ class process{
 
   process(){
     workers = 0;
-    next_time = std::numeric_limits<int>::max();
+    next_time = 0;
   }
 
 };
@@ -93,19 +99,15 @@ class JobQueue {
       if (i < num_workers_)
         next_freee_time[0].workers = i;
 
-
       assigned_workers_[i] = next_freee_time[0].workers;
       start_times_[i] = next_freee_time[0].next_time;
       cout << assigned_workers_[i] << " " << start_times_[i] << "\n";
-      if (next_freee_time[0].next_time == std::numeric_limits<int>::max())
-        next_freee_time[0].next_time = jobs_[i];
-      else{
-        next_freee_time[0].next_time += jobs_[i];
-      }
-      
-      
-      
-      SiftDown(1);
+      /*if(i < num_workers_)
+      next_freee_time[0].next_time = jobs_[i];
+      else{*/
+      next_freee_time[0].next_time += jobs_[i];
+    
+       SiftDown(0);
 
      /* for (int j = 0; j < next_freee_time.size(); j++){
         if(next_freee_time[j] < next_freee_time[next_worker])
@@ -136,17 +138,16 @@ class JobQueue {
   }
 
   int LeftChild(int i){
-    return (2*i);
+    return (2*i +1);
   }
 
   int RightChild(int i){
-    return (2*i)+1;
+    return (2*i)+2;
   }
 
   void SiftUp(int i){
     while (i > 1 && next_freee_time[Parents(i)].next_time > next_freee_time[i].next_time){
-      swap(next_freee_time[Parents(i)].next_time, next_freee_time[i].next_time);
-      swap(next_freee_time[Parents(i)].workers, next_freee_time[i].workers);
+      swap(next_freee_time[Parents(i)], next_freee_time[i]);
       i = Parents(i);
     }
     
@@ -155,14 +156,13 @@ class JobQueue {
   void SiftDown(int i){
     int MinIndex = i;
     int l = LeftChild(i);
-    if (l <= next_freee_time.size() && next_freee_time[l-1].next_time < next_freee_time[MinIndex-1].next_time)
+    if (l <= next_freee_time.capacity() && next_freee_time[l].next_time < next_freee_time[MinIndex].next_time || (next_freee_time[l].next_time == next_freee_time[MinIndex].next_time && next_freee_time[l].workers < next_freee_time[MinIndex].workers))
       MinIndex = l;
     int r = RightChild(i);
-    if(r <= next_freee_time.size() && next_freee_time[r-1].next_time < next_freee_time[MinIndex-1].next_time)
+    if (r <= next_freee_time.capacity() && next_freee_time[r].next_time < next_freee_time[MinIndex].next_time || (next_freee_time[l].next_time == next_freee_time[MinIndex].next_time && next_freee_time[l].workers < next_freee_time[MinIndex].workers))
       MinIndex = r;
     if (MinIndex != i){
-      swap(next_freee_time[MinIndex-1].next_time, next_freee_time[i-1].next_time);
-      swap(next_freee_time[MinIndex-1].workers, next_freee_time[i-1].workers);
+      swap(next_freee_time[MinIndex], next_freee_time[i]);
       SiftDown(MinIndex);
     }
  
@@ -172,7 +172,7 @@ class JobQueue {
   void Solve() {
     ReadData();
     AssignJobs();
-    //WriteResponse();
+    WriteResponse();
   }
 };
 
