@@ -1,13 +1,20 @@
+/**
+ * Simple C++ class for representing a Cube.
+ * 
+ * @author
+ *   Wade Fagen-Ulmschneider <waf@illinois.edu>
+ */
+
 #include "Cube.h"
 
-double basri::Cube::getVolume() {
+double Cube::getVolume() {
   return length_ * length_ * length_;
 }
 
-double basri::Cube::getSurfaceArea() {
+double Cube::getSurfaceArea() {
   return 6 * length_ * length_;
 }
 
-void basri::Cube::setLength(double length) {
+void Cube::setLength(double length) {
   length_ = length;
 }
