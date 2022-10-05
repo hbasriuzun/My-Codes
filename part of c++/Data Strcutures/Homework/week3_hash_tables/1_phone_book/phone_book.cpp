@@ -6,6 +6,18 @@ using std::string;
 using std::vector;
 using std::cin;
 
+class hash_table{
+    private:
+
+    public:
+    // hash function
+    int hash_function(int num){
+        int a=34,b=2,p=10000019;
+        return ((a*num+2)%p)%1000;
+    }
+        
+};
+
 struct Query {
     string type, name;
     int number;
