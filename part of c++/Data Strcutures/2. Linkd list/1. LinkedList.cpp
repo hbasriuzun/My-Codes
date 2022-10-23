@@ -6,7 +6,7 @@ template <typename T>
  struct node
 {
   T key;
-  T *next_data;
+  node<T> *next_data;
 };
 
 
@@ -17,7 +17,15 @@ class Linked_list
   void Push_Front(T key);
   void Push_Back(T key);
   void Pop_Front();
-  Linked_list<T>::Linked_list(node<T>* head, node<T>* tail);
+  void Pop_Back();
+
+  Linked_list();
+  //Linked_list(node<T>* head, node<T>* tail);
+  node<T>* Return_head(){return head;}
+  node<T>* Return_tail(){return tail;}
+  void Add_head(node<T> *newhead){head = newhead;}
+  void Add_tail(node<T> *newtail){tail = newtail;}
+
 
   private:
     node<T> *head;
@@ -26,26 +34,27 @@ class Linked_list
 
 int main(int argc, char const *argv[])
 {
-  Linked_list<int> *first = nullptr;
-  first->Push_Back(8);
+  Linked_list<int> first;
+  first.Push_Front(8);
 
   return 0;
 }
 
 template<class T>
-Linked_list<T>::Linked_list(node<T>* head,node <T>* tail){
-    head = nullptr;
-    tail = nullptr;
-  }
+//Linked_list<T>::Linked_list(node<T>* head,node <T>* tail)
+Linked_list<T>::Linked_list(){
+    head = NULL;
+    tail = NULL;
+  } 
 
 template<class T>
 void Linked_list<T>::Push_Front(T key){
-  node<T> newNode;
+  node<T> *newNode = new node<T>;
   newNode->key = key;
-  newNode->next_node = head;
-  head = &newNode;
+  newNode->next_data = head;
+  head = newNode;
 
-  if(tail == nullptr)
+  if(tail == NULL)
     tail == head;
 }
 
@@ -61,14 +70,33 @@ void Linked_list<T>::Pop_Front(){
 
 template<class T>
 void Linked_list<T>::Push_Back(T key){
-  node<T> newNode;
-  newNode.key = key;
-  newNode.next_data=nullptr;
-  if(tail == nullptr){
-    head=&newNode;
-    tail=&newNode;
+  node<T>* newNode = new node<T>;
+  newNode->key = key;
+  newNode->key=nullptr;
+  if(Return_tail() == nullptr){
+    head=newNode;
+    tail=newNode;
   }else{
-    tail.next_node = *newNode;
-    tail = *newNode;
+    Return_tail()->next_data = newNode;
+    Add_tail(newNode);
   }
 }
+
+  template<class T>
+  void Linked_list<T>::Pop_Back(){
+    if(head == nullptr){
+    printf("Error"); return;}
+
+    if(head == tail){
+      head=NULL;
+      tail=nullptr;
+    }else{
+      node<T>* ptr=head;
+      while(head->next_data->next_data != nullptr){
+        ptr=ptr->next_data;
+      }
+      ptr->next_data=nullptr;
+    }
+  }
+
+  
