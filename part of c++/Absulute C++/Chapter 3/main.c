@@ -23,6 +23,7 @@ int computerturn(int *b,int *computerpoint){
 }
     return 0;
 }
+
 int playerturn(int *b,int *playerpoint){
     char c;
     int temp = 0;
@@ -52,6 +53,7 @@ int playerturn(int *b,int *playerpoint){
         }
     }
 }
+
 int main()
 {
     int playerpoint = 0,computerpoint = 0;
