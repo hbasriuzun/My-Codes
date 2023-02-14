@@ -1,0 +1,3 @@
+word = "hasan"
+
+word.a
