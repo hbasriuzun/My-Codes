@@ -1,0 +1,78 @@
+#include <iostream>
+using namespace std;
+
+struct Time {
+    int hours;
+    int minutes;
+    int seconds;
+    string xm;
+};
+
+void getTime(Time &t) {
+    cout << "Enter time:" << endl;
+    cout << "Hours? ";
+    cin >> t.hours;
+    cout << "Minutes? ";
+    cin >> t.minutes;
+    cout << "Seconds? ";
+    cin >> t.seconds;
+    cout << "AM or PM? ";
+    cin >> t.xm;
+}
+
+void showTime(Time t) {
+    cout << t.hours << ":";
+    if (t.minutes < 10)
+        cout << "0";
+    cout << t.minutes << ":";
+    if (t.seconds < 10)
+        cout << "0";
+    cout << t.seconds << " ";
+    cout << t.xm << endl;
+}
+
+void addTime(Time &t1, Time &t2, Time &t3) {
+    t3.seconds = t1.seconds + t2.seconds;
+    t3.minutes = t1.minutes + t2.minutes;
+    t3.hours = t1.hours + t2.hours;
+
+    if (t3.seconds >= 60) {
+        t3.seconds -= 60;
+        t3.minutes++;
+    }
+
+    if (t3.minutes >= 60) {
+        t3.minutes -= 60;
+        t3.hours++;
+    }
+
+    if (t3.hours > 12) {
+        t3.hours -= 12;
+        if (t3.xm == "AM")
+            t3.xm = "PM";
+        else
+            t3.xm = "AM";
+    }
+}
+
+int main() {
+    Time t1, t2, sum;
+
+    getTime(t1);
+    getTime(t2);
+
+    addTime(t1, t2, sum);
+
+    cout << "Time 1 = ";
+    showTime(t1);
+    cout << endl;
+
+    cout << "Time 2 = ";
+    showTime(t2);
+    cout << endl;
+
+    cout << "Sum of times = ";
+    showTime(sum);
+
+    return 0;
+}
