@@ -9,6 +9,10 @@
         "xstring": "cpp",
         "xtree": "cpp",
         "xutility": "cpp",
-        "stdio.h": "c"
-    }
+        "stdio.h": "c",
+        "stack": "cpp",
+        "utility": "cpp",
+        "iosfwd": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

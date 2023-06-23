@@ -10,21 +10,21 @@ int main(){
         cin >> arr[i];
     }
 
-    int left = 0, right = 1023;
+    int left = 1, right = 1024;
 
     int mid = (left + right) / 2;
 
     while (left <= right)
     {
-        mid = (left + right) / 2;
+        ++mid = (left + right + 1) / 2;
         if(n == arr[mid]){
             std::cout << mid << " " << arr[mid] << endl;
             break;
         }else if(n < arr[mid]){
-            right = mid + 1;
+            right = mid - 1;
             std::cout << mid << " " << arr[mid] << endl;
         }else if(n > arr[mid]){
-            left = mid - 1;
+            left = mid + 1;
             std::cout << mid << " " << arr[mid] << endl;
         }
     }

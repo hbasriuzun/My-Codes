@@ -1,27 +1,34 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <algorithm>
+
 using namespace std;
 
-
-string countDivisibleSums(string n){
-    string count=0,sum=0;
-    int i = n.size() ;
-    int j = n.size() ;
-
-    for(i=1;i<=n.size();i++){
-        sum.length()+=i;
-        if(sum.size()%(i+1) == 0){
-            count.length()++;
-        }
-    }
-    return count;
-}
+typedef unsigned long long ull;
+typedef long long ll;
 
 int main() {
-    string n,result;
+    ll n,min_sum=1000000000;
     cin>>n;
+    if(n==1){
+        ll num;
+        cin>>num;
+        cout<<abs(num)<<endl;
+        return 0;
+    }
 
-    result= countDivisibleSums(n);
-    cout<<result;
+    vector<ll> v(n);
+    for(ll i=0; i<n; i++)
+        cin>>v[i];
+
+    for(ll i; i<n; i++){
+        for(ll j=i+1; j<n; j++){
+            if(abs(v[i]+v[j])<min_sum)
+                min_sum = abs(v[i]+v[j]);
+        }
+    }
+    
+    cout<<min_sum<<endl;
     return 0;
 }
