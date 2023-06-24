@@ -15,7 +15,7 @@ typedef long long ll;
 
 class DFS {
 public:
-    vector<vector<ll>> v;
+    vector<set<ll>> v;
     map<ll, bool> exploerer;
     ll nodes_number;
 
@@ -30,8 +30,8 @@ public:
         for(ll i = 0; i < edges_number; i++){
             ll a, b;
             cin >> a >> b;
-            v[a].push_back(b);
-            v[b].push_back(a);
+            v[a].insert(b);
+            v[b].insert(a);
         }
     }
 
@@ -49,8 +49,9 @@ public:
 
 
         while(cities.size() != nodes_number){
+            ll i = 1;
             if(cities.size() != nodes_number){
-                for(ll i = 1; i <= nodes_number; i++){
+                for(; i <= nodes_number; i++){
                     if(!exploerer[i]){
                         pq.push(i);
                         exploerer[i] = true;
@@ -58,17 +59,21 @@ public:
                     }
                 }
             }
+
             while(!pq.empty()){
                 ll curr = pq.top();
                 pq.pop();
                 cities.push_back(curr);
 
-                for(auto neighbor : v[curr]){
-                    if(exploerer[neighbor])
+                    if(v[curr].empty())
                         continue;
+                    int neighbor = *(v[curr].rbegin());
+
+                    if(exploerer[neighbor] )
+                        continue; 
                     pq.push(neighbor);
                     exploerer[neighbor] = true;
-                }
+                
             }
                 
         }
