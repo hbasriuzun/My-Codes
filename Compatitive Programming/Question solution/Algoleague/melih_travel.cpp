@@ -44,12 +44,11 @@ public:
             return cities;
         }
         stack<ll> pq;
-
         vector<ll> cities;
 
 
-        while(cities.size() != nodes_number){
             ll i = 1;
+        while(cities.size() != nodes_number){
             if(cities.size() != nodes_number){
                 for(; i <= nodes_number; i++){
                     if(!exploerer[i]){
@@ -67,12 +66,14 @@ public:
 
                     if(v[curr].empty())
                         continue;
-                    int neighbor = *(v[curr].rbegin());
+                    for(auto it=v[curr].rbegin(); it != v[curr].rend(); it++){
+                        if(exploerer[*it])
+                            continue;
+                        pq.push(*it);
+                        exploerer[*it] = true;
+                        break;
+                    }
 
-                    if(exploerer[neighbor] )
-                        continue; 
-                    pq.push(neighbor);
-                    exploerer[neighbor] = true;
                 
             }
                 
