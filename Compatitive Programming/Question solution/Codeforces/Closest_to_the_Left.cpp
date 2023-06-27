@@ -1,23 +1,38 @@
 #include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <queue>
+#include <stack>
+#include <cmath>
+#include <unordered_map>
 
 #define endl "\n"
+const int N = 1e5+5;
+
+using namespace std;
+typedef unsigned long long ull;
+typedef long long ll;
+
 using namespace std;
 
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    int n,q;
+    ll n,q;
     cin >> n >> q;
     
-    int a[n];
+    ll a[n];
     
-    for(int& x : a){
+    for(ll& x : a){
         cin >> x;
     }
     
     while(q--){
-        int x,l = -1,r = n-1,mid;
+        ll x,l = -1,r = n-1,mid;
         cin >> x;
 
         while (l<r)
@@ -25,16 +40,20 @@ int main(){
             mid = (l+r+1)/2;
             if(a[mid]<=x)
                 l = mid;
+                if(a[mid] == x)
+                    break;
             else
                 r = mid-1;
         }
-        cout << l+1 << endl;
+        if(a[mid] == x)
+            cout << mid + 1 << endl;
+        else 
+            cout << l+2 << endl;
         
 
 
     }
     
-    cout << l + 1 << endl;
     return 0;
     
 }

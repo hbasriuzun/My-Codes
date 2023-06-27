@@ -63,7 +63,7 @@ void Graph::shortestPath(node src,node dst)
     node tmp;
     tmp.x = 0;
     tmp.y = 0;
-	pq.push(make_pair(0, src));
+	pq.push(make_pair(node, src));
 	dist[src] = 0;
 
 
