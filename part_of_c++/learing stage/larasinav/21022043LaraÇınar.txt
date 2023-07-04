@@ -1,0 +1,41 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+
+using namespace std;
+
+int main() {
+  int numbers[30];
+
+  for (int i = 0; i < 30; i++) {
+    numbers[i] = rand() % 41 + 10;
+  }
+
+  vector<int> oddNumbers;
+  vector<int> evenNumbers;
+  for (int number : numbers) {
+    if (number % 2 == 1) {
+      oddNumbers.push_back(number);
+    } else {
+      evenNumbers.push_back(number);
+    }
+  }
+
+  sort(oddNumbers.begin(), oddNumbers.end());
+  sort(evenNumbers.begin(), evenNumbers.end());
+
+  cout << "Odd numbers: ";
+  for (int number : oddNumbers) {
+    cout << number << " ";
+  }
+  cout << endl;
+
+  cout << "Even numbers: ";
+  for (int number : evenNumbers) {
+    cout << number << " ";
+  }
+  cout << endl;
+
+  return 0;
+}

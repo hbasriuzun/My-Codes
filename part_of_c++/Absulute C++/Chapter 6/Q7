@@ -1,0 +1,9 @@
+#include <Bits/stdc++.h>
+using namespace std;
+
+int main(int argc, char const *argv[])
+{
+    int num;
+    
+    return 0;
+}
