@@ -15,7 +15,8 @@
         "iosfwd": "cpp",
         "deque": "cpp",
         "list": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "array": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
