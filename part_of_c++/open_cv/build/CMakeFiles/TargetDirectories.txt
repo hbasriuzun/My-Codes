@@ -1,0 +1,3 @@
+/home/hbasriuzun/Belgeler/GitHub/My-Codes/part_of_c++/open_cv/build/CMakeFiles/main.dir
+/home/hbasriuzun/Belgeler/GitHub/My-Codes/part_of_c++/open_cv/build/CMakeFiles/edit_cache.dir
+/home/hbasriuzun/Belgeler/GitHub/My-Codes/part_of_c++/open_cv/build/CMakeFiles/rebuild_cache.dir
