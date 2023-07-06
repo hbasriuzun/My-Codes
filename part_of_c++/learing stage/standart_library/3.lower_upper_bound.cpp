@@ -11,6 +11,7 @@ int main(){
     auto it1 = mySet.lower_bound(25);
     int index = std::distance(mySet.begin(), it1);
     cout << index << endl;
+    cout << *it1 << endl;
 
      it1 = mySet.lower_bound(30);
      index = std::distance(mySet.begin(), it1);
@@ -24,4 +25,7 @@ int main(){
      index = std::distance(mySet.begin(), it2);
     cout << index << endl;
 
+     it2 = mySet.lower_bound(45);
+    index = std::distance(mySet.begin(), it2);
+    cout << index << endl;
 }

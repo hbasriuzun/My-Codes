@@ -8,7 +8,7 @@ using namespace std;
 
 int main()
 {
-        auto print = [](const int& n) { std::cout << ' ' << n; };
+    auto print = [](const int& n) { std::cout << ' ' << n; };
 
 	set<int, greater<int> > s1;
 
@@ -73,6 +73,7 @@ int main()
     for(auto s: s3)
         cout << s[0] << ' ' << s[1] << endl;
     cout << endl;
+
 
     for_each(s1.begin(), s1.end(), print);
     cout << endl;

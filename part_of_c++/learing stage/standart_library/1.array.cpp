@@ -7,17 +7,22 @@ using namespace std;
  
 int main()
 {
-    auto print = [](const int& n) { std::cout << ' ' << n; };
+    auto print = [](const auto& n) { std::cout << ' ' << n; };
     //auto print = [](const auto& n) { std::cout << ' ' << n; };
 
-    std::array<int, 3> a1{1, 2, 3} ; 
+    array<int, 3> a1{1, 2, 3} ; 
+    
     int a5[3] = {1,2,3};
 
-        for (const auto& s: a5)
+        for (auto& s: a5)
             std::cout << s << ' ';
 
-    //a5.front();
-    a1.front();
+        cout << endl;
+
+
+   // a5.front();
+    cout << a1.front() << endl;
+
     std::array<std::string, 2> a3 = { std::string("a"), "b" };
 
     for (const auto& s: a3)
