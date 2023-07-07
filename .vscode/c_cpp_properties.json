@@ -1,22 +1,18 @@
 {
     "configurations": [
-        {
-            "name": "Win32",
-            "includePath": [
-                "${workspaceFolder}/**"
-            ],
-            "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE"
-            ],
-            "windowsSdkVersion": "10.0.22621.0",
-            "compilerPath": "cl.exe",
-            "cStandard": "c23",
-            "cppStandard": "c++23",
-            "intelliSenseMode": "windows-msvc-arm64",
-            "configurationProvider": "ms-vscode.cmake-tools"
-        }
+      {
+        "name": "Linux",
+        "includePath": [
+          "${workspaceFolder}/**",
+          "/usr/include/opencv4"  // OpenCV'nin doğru include dizinini buraya ekleyin
+        ],
+        "defines": [],
+        "compilerPath": "/usr/bin/gcc",
+        "cStandard": "gnu17",
+        "cppStandard": "gnu++14",
+        "intelliSenseMode": "gcc-x64"
+      }
     ],
     "version": 4
-}
+  }
+  
