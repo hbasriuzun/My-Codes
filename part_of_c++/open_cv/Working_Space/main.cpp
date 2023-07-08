@@ -1,30 +1,44 @@
-#include <iostream>
 #include <opencv2/opencv.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
 
-#define endl "\n"
-using namespace cv;
-using namespace std;
+int main() {
+    // Cascade sınıflandırıcısını yükleyin
+    cv::CascadeClassifier dogCascade;
+    dogCascade.load("Resources/haarcascade_frontalcatface.xml");
 
-/////////////// Basic Functions ///////////////
+    // Giriş video akışını açın
+    cv::VideoCapture cap("Resources/dog_video.mp4");
+    if (!cap.isOpened()) {
+        std::cout << "Video açılamadı!" << std::endl;
+        return -1;
+    }
 
-int main()
-{
-    string path = "Resources/Burcu.jpeg";
-    Mat img = imread(path), imgResize, imgCrop;
-    
-    cout << img.size() << endl;
+    cv::Mat frame;
+    while (cap.read(frame)) {
+        // Gri tonlamaya dönüştürün
+        cv::Mat gray;
+        cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
 
-    resize(img, imgResize, Size(), 0.5, 0.5);
-    
-    imshow("Image", img);
+        // Köpekleri algılayın
+        std::vector<cv::Rect> dogs;
+        dogCascade.detectMultiScale(gray, dogs, 1.1, 3, 0 | cv::CASCADE_SCALE_IMAGE, cv::Size(30, 30));
 
+        // Algılanan köpekleri dikdörtgenle çerçeveleyin
+        for (const cv::Rect& dog : dogs) {
+            cv::rectangle(frame, dog, cv::Scalar(0, 255, 0), 2);
+        }
 
-    waitKey(0);
+        // Sonuçları gösterin
+        cv::imshow("Köpek Algılama", frame);
+
+        // Çıkış için ESC tuşuna basılıp basılmadığını kontrol edin
+        if (cv::waitKey(10) == 27) {
+            break;
+        }
+    }
+
+    // Kaynakları serbest bırakın
+    cap.release();
+    cv::destroyAllWindows();
 
     return 0;
 }
-
-
