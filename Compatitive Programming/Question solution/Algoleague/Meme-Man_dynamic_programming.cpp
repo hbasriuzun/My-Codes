@@ -1,8 +1,4 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <map>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -27,6 +23,13 @@ int main(){
     map<int, int> *memory;
     memory = new map<int, int>;
     cin >> stair >> x >> y;
+    
+    auto start = std::chrono::high_resolution_clock::now();
+
     cout << find(stair, x, y, count, memory);
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+    std::cout << "Program çalışma süresi: " << duration.count() << " saniye." << std::endl;
     return 0;
 }
