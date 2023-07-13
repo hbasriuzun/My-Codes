@@ -23,7 +23,8 @@ int main(){
     map<int, int> *memory;
     memory = new map<int, int>;
     cin >> stair >> x >> y;
-    
+    stack<int> s;
+    s.em
     auto start = std::chrono::high_resolution_clock::now();
 
     cout << find(stair, x, y, count, memory);
