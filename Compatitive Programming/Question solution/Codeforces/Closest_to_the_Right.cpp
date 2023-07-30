@@ -14,5 +14,8 @@ int main(){
         int index = distance(a, lower);
         cout << index << endl;
     }
+
+
     return 0;
 }
+
