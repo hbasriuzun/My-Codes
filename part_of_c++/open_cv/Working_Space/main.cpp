@@ -10,12 +10,12 @@ int main() {
     std::string path = "Resources/shapes.png";
     cv::Mat img = imread(path);
 
-    cvtColor(img, imgGray, COLOR_BGR2GRAY);
-    GaussianBlur(imgGray, imgBlur, Size(7, 7), 5, 0);
-    Canny(imgBlur, imgCanny, 25, 75);
-    Mat kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
-    dilate(imgCanny, imgDil, kernel);
-    erode(imgDil, imgErode, kernel);
+    // cvtColor(img, imgGray, COLOR_BGR2GRAY);
+    // GaussianBlur(imgGray, imgBlur, Size(7, 7), 5, 0);
+    // Canny(imgBlur, imgCanny, 25, 75);
+    // Mat kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
+    // dilate(imgCanny, imgDil, kernel);
+    // erode(imgDil, imgErode, kernel);
 
 
     cv::imshow("Image", img);
