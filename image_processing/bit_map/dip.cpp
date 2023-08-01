@@ -60,7 +60,7 @@ IMAGE *ImageRead(IMAGE *image,char *filename)
 		exit(1);
 	}
     fread(&bmpih,sizeof(BMPIH),1,fp);//reads bitmap info header from the file and set to bmpih
-	image=(IMAGE *) malloc(bmpfh.bfsize);//allocates memory for image
+		image=(IMAGE *) malloc(bmpfh.bfsize);//allocates memory for image
 	if(image==NULL) {printf("There is no enough memory for this operation");exit(1);}
 	image->bmpfh=bmpfh;//sets bmpfh to image 
 	image->bmpih=bmpih;//sets bmpih to image
@@ -195,6 +195,7 @@ BYTE meanofmaxmin(BYTE *data,int h,int rowsize)
 	int i;
 	BYTE max=data[0],min=data[0];
 	double t;
+
 	for(i=1;i<h*rowsize;i++)
 	{
 		if(data[i]>max) max=data[i];
@@ -254,6 +255,7 @@ void thresholdImage(IMAGE *image)
 	printf("Threshold value:%d\n",t);
 	thresholdImage(image,t);
 }
+
 void lowpassFilter(IMAGE *image,double filter[3][3])
 {
 	int h,w,rowsize,i,j,k,l;
@@ -289,6 +291,54 @@ void lowpassFilter(IMAGE *image,double filter[3][3])
 	}
 	free(data);
 }
+/*
+void lowpassFilter(IMAGE *image, double filter[3][3]) {
+    int h, w, rowsize, i, j, k, l;
+    BYTE mask[3][3];
+    double sum;
+    BYTE *data;
+
+    h = image->bmpih.bih;
+    w = image->bmpih.biw;
+    rowsize = (image->bmpih.bibitcount * w + 31) / 32 * 4;
+    
+    data = (BYTE*) calloc(h * rowsize, sizeof(BYTE));
+    if (data == NULL) {
+        printf("Memory problem");
+        exit(1);
+    }
+
+    memcpy(data, image->data, h * rowsize);
+
+    for (i = 1; i < h - 1; i++) {
+        for (j = 1; j < rowsize - 1; j++) {
+            for (k = -1; k < 2; k++) {
+                for (l = -1; l < 2; l++) {
+                    mask[k + 1][l + 1] = data[(i + k) * rowsize + j + l];
+                }
+            }
+            
+            sum = 0;
+            for (k = 0; k < 3; k++) {
+                for (l = 0; l < 3; l++) {
+                    sum += mask[k][l] * filter[k][l];
+                }
+            }
+
+            if (sum > 255) {
+                sum = 255;
+            } else if (sum < 0) {
+                sum = 0;
+            }
+
+            image->data[i * rowsize + j] = (BYTE) sum;
+        }
+    }
+
+    free(data);
+}
+
+*/
 BYTE median(BYTE *mask)
 {
 	int i,j,index;
@@ -331,6 +381,7 @@ void medianFilter(IMAGE *image)
 	}
 	free(data);
 }
+/*
 void addNoisy(IMAGE *image,int nwhite,int nblack)
 {
 	srand(time(NULL));
@@ -338,26 +389,62 @@ void addNoisy(IMAGE *image,int nwhite,int nblack)
 	h=image->bmpih.bih;
 	w=image->bmpih.biw;
 	rowsize=(image->bmpih.bibitcount*w+31)/32*4;
-	int i,rnd;
+	long i,rnd;
 	for(i=0;i<nwhite;i++)
 	{
-		rnd=((RAND_MAX+1)*(int) rand()+rand())%(h*rowsize);
+		rnd=((RAND_MAX+1)*(long) rand())%(h*rowsize);
 		image->data[rnd]=255;
 	}
 	for(i=0;i<nblack;i++)
 	{
-		rnd=((RAND_MAX+1)*(int) rand()+rand())%(h*rowsize);
+		rnd=((RAND_MAX+1)*(long) rand())%(h*rowsize);
 		image->data[rnd]=0;
 	}
 	return;
 	      
 	
 }
+*/
+void addNoisy(IMAGE *image, int nwhite, int nblack) {
+    srand(time(NULL));
+    int h, w, rowsize;
+    h = image->bmpih.bih;
+    w = image->bmpih.biw;
+    rowsize = (image->bmpih.bibitcount * w + 31) / 32 * 4;
+
+    if (nwhite > h * rowsize || nblack > h * rowsize) {
+        printf("Error: Number of white or black pixels exceeds image size.\n");
+        return;
+    }
+
+    int i, rnd;
+
+    // Add nwhite white noisy pixels
+    for (i = 0; i < nwhite; i++) {
+        rnd = rand() % (h * rowsize);
+        image->data[rnd] = 255;
+    }
+
+    // Add nblack black noisy pixels
+    for (i = 0; i < nblack; i++) {
+        rnd = rand() % (h * rowsize);
+        image->data[rnd] = 0;
+    }
+}
+
 
 int main()
 {
 	IMAGE *image=(IMAGE*)malloc(sizeof(IMAGE));
-	double filter[3][3]={1./16,2./16,1./16,2./16,4./16,2./16,1./16,2./16,1./16};
+	//double filter[3][3]={1./16,2./16,1./16,2./16,4./16,2./16,1./16,2./16,1./16};
+
+	double filter[3][3] = {
+		{1.0 / 9, 1.0 / 9, 1.0 / 9},
+		{1.0 / 9, 1.0 / 9, 1.0 / 9},
+		{1.0 / 9, 1.0 / 9, 1.0 / 9}
+	};
+
+
 	image=ImageRead(image,"biber.bmp");
 	
 	//printf("the value:%d\n",RAND_MAX);
@@ -367,10 +454,10 @@ int main()
     //thresholdImage(image,100);
     //thresholdImage(image);
     //lowpassFilter(image,filter);
-    //addNoisy(image,30000,10000);
+    //addNoisy(image,10000,10000);
     //medianFilter(image);
-	histogram(image);
-	//ImageWrite(image,"median1.bmp");
+	//histogram(image);
+	ImageWrite(image,"test_filter.bmp");
 	free(image);   
 	
 	return 0;

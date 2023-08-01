@@ -54,6 +54,11 @@ void negativeImage(IMAGE *image);
 long findSize(IMAGE*image);
 void changeColorPalette(IMAGE *image);
 BYTE meanofmaxmin(BYTE *data,int h,int rowsize);
+BYTE mean(BYTE *data,int h,int rowsize);
+void thresholdImage(IMAGE *image,BYTE t);
+void swap(BYTE *a,BYTE *b);
+BYTE median(BYTE *data,int h,int rowsize);
+
 
 
 
@@ -240,7 +245,48 @@ void changeColorPalette(IMAGE *image){
     }
 }
 BYTE meanofmaxmin(BYTE *data,int h,int rowsize){
-    
+    int i;
+    BYTE max=data[0],min=data[0];
+    doube t;
+
+	for(i=1;i<h*rowsize;i++)
+	{
+		if(data[i]>max) max=data[i];
+		if(data[i]<min) min=data[i];
+	}
+	t=(max+min)/2.;
+	return (BYTE) t;
 }
+BYTE mean(BYTE *data,int h,int rowsize){
+    double sum=0;
+    int i;
+	for(i=0;i<h*rowsize;i++) sum+=data[i];
+	sum/=(h*rowsize);
+	return (BYTE) sum;
+}
+void thesholdImage(IMAGE *image,BYTE t){
+    int i,size = findSize(image);
 
+    for(i=0;i<size;i++)
+        if (image->data[i]>t) image->data[i]=255;
+	    else image->data[i]=0;
 
+}
+void swap(BYTE *a,BYTE *b){
+    int c=*a;
+	*a=*b;
+	*b=c;
+}
+BYTE median(BYTE *data,int h,int rowsize)
+{
+	int j,i,index;
+	for(i=0;i<h*rowsize;i++)
+	{
+		index=i;
+		for(j=i+1;j<h*rowsize;j++)
+		     if(data[j]<data[index]) index=j;
+		if(i!=index) swap(&data[i],&data[index]);
+	}
+	
+	return data[h*rowsize/2];
+}
