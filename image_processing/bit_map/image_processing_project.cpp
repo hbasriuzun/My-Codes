@@ -61,8 +61,8 @@
         void histogramEqualization();
         void negativeImage();
         void changeColorPalette();
-
-
+        BYTE meanofmaxmin();
+        BYTE mean();
 
 
         IMAGE(/* args */);
@@ -203,4 +203,24 @@
             this->palet[i].rgbred = pow(2,this->bmpih.bibitcount) - 1- this->palet[i].rgbred;
         }
     }
+    BYTE IMAGE::meanofmaxmin(){
+        return *(std::min_element(this->data.get(), this->data.get() + this->size)) +
+               *(std::max_element(this->data.get(), this->data.get() + this->size)) / 2;
+    }
+    BYTE IMAGE::mean(){
+        return std::accumulate(this->data.get(), this->data.get() + this->size,0)/size;        
+    }
+    BYTE IMAGE::median(){
+        retrun 0;
+    }
+    void IMAGE::thresholdImage(){
+        BYTE t = mean();
+
+    }
+    void IMAGE::lowpassFilter(IMAGE *image,double filter[3][3]){
+        std::array<int,3> s1,s2,s3;
+        
+    }
+
+
 
