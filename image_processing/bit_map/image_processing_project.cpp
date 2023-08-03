@@ -57,8 +57,11 @@
         void setZero();
         void histogram(std::vector<int> &hist);
         void histogram();
-        void histogram(std::vector<double> &hist){
+        void histogram(std::vector<double> &hist);
         void histogramEqualization();
+        void negativeImage();
+        void changeColorPalette();
+
 
 
 
@@ -79,11 +82,14 @@
 
     int main(){
         std::unique_ptr<IMAGE> resim = std::make_unique<IMAGE>();
-        resim->ImageRead("biber.bmp");
+        resim->ImageRead("kelebek.bmp");
         //resim->writeInfo("biber.bmp");
         //resim->setZero();
         //resim->ImageWrite("test.bmp");
-        resim->histogram();
+        //resim->histogram();
+        //resim->histogramEqualization();
+        resim->negativeImage();
+        resim->ImageWrite("test_filter.bmp");
         resim->~IMAGE();
     }
 
@@ -103,7 +109,8 @@
         this->bmpfh = _bmpfh;
         this->bmpih = _bmpih;
 
-        this->palettesize = 1 << bmpih.bibitcount;
+        if(this->bmpih.bibitcount <= 8)
+            this->palettesize = 1 << bmpih.bibitcount;
         
         if(this->palettesize!=0){
             palet = std::make_unique<PALET[]>(palettesize);
@@ -154,23 +161,25 @@
             for(DWORD j=0; j<rowsize; j++) this->data[i*rowsize+j]=0;
     }
     void IMAGE::histogram(std::vector<double> &hist){
-        for(int i = 0; i < this->size ;i++)
+        for(DWORD i = 0; i < this->size ;i++)
             hist[this->data[i]]++;
+        std::cout << "check" << std::endl;
     }
     void IMAGE::histogram(){
-        std::vector hist(this->palettesize);
+        std::vector<int> hist(this->palettesize);
         for (size_t i = 0; i < this->palettesize; i++)
             hist[this->data[i]]++;
         std::ofstream outputxt("hist.txt");
-        if (!inputFile) {std::cerr << "Dosya açılamadı." << std::endl;return 1;}
+        if (!outputxt) {std::cerr << "Dosya açılamadı." << std::endl;exit(1);}
         for (size_t i = 0; i < this->palettesize; i++)
             outputxt << i << "\t" << hist[i] << "\n";
         outputxt.close();
         
     }
     void IMAGE::histogramEqualization(){
-        std::vector<double> hist(this->palettesize);
-        int t;
+        std::vector<double> hist(this->palettesize,0);
+        int t=0;
+        std::cout << "check 2" << hist[100] <<  std::endl;
 
         this->histogram(hist);
         for (size_t i = 0; i < this->palettesize; i++)
@@ -182,5 +191,16 @@
         }
         for (size_t i = 0; i < this->palettesize; i++)
             this->data[i] = (BYTE)hist[this->data[i]];
+    }
+    void IMAGE::negativeImage(){
+        for(DWORD i=0; i < this->size; i++)
+            this->data[i] = pow(2,this->bmpih.bibitcount)-1-this->data[i];
+    }
+    void IMAGE::changeColorPalette(){
+        for(DWORD i = 0; i < this->palettesize; i++){
+            this->palet[i].rgbblue = pow(2,this->bmpih.bibitcount) - 1- this->palet[i].rgbblue;
+            this->palet[i].rgbgreen = pow(2,this->bmpih.bibitcount) - 1- this->palet[i].rgbgreen;
+            this->palet[i].rgbred = pow(2,this->bmpih.bibitcount) - 1- this->palet[i].rgbred;
+        }
     }
 

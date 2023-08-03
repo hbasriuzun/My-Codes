@@ -72,7 +72,7 @@ int main(){
     //histogramEqulization(image);
     //negativeImage(image);
 	changeColorPalette(image);
-    ImageWrite(image,"test.bmp");
+    ImageWrite(image,"test_filter.bmp");
 	free(image);
     return 0;
 }
