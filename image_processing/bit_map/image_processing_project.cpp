@@ -218,8 +218,8 @@
 
     }
     void IMAGE::lowpassFilter(IMAGE *image,double filter[3][3]){
-        std::array<int,3> s1,s2,s3;
         
+
     }
 
 
