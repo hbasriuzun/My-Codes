@@ -446,17 +446,8 @@ int main()
 
 
 	image=ImageRead(image,"biber.bmp");
-	
-	//printf("the value:%d\n",RAND_MAX);
+
 	writeInfo(image,"biber.bmp");
-    //negativeImage(image);
-    //changeColorPalette(image);
-    //thresholdImage(image,100);
-    //thresholdImage(image);
-    //lowpassFilter(image,filter);
-    //addNoisy(image,10000,10000);
-    //medianFilter(image);
-	//histogram(image);
 	ImageWrite(image,"test_filter.bmp");
 	free(image);   
 	

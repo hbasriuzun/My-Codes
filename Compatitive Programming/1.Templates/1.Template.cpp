@@ -11,7 +11,9 @@ int main(){
     ios::sync_with_stdio(false);
     cin.tie(NULL);
     
-
+    array <int,1024> arr;
+    arr.
+    arr
 
     return 0;
 }

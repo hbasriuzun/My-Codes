@@ -54,16 +54,8 @@
         void ImageRead(std::string filename);
         void ImageWrite(std::string filename);
         void writeInfo(std::string fname);
-        void setZero();
-        void histogram(std::vector<int> &hist);
-        void histogram();
-        void histogram(std::vector<double> &hist);
-        void histogramEqualization();
-        void negativeImage();
-        void changeColorPalette();
-        BYTE meanofmaxmin();
-        BYTE mean();
-
+        void changePixelColor(int x, int y, BYTE newR, BYTE newG, BYTE newB); // Yeni fonksiyon
+        void changeimage24_to_8()
 
         IMAGE(/* args */);
         ~IMAGE();
@@ -82,15 +74,29 @@
 
     int main(){
         std::unique_ptr<IMAGE> resim = std::make_unique<IMAGE>();
-        resim->ImageRead("kelebek.bmp");
-        //resim->writeInfo("biber.bmp");
-        //resim->setZero();
-        //resim->ImageWrite("test.bmp");
-        //resim->histogram();
-        //resim->histogramEqualization();
-        resim->negativeImage();
+        resim->ImageRead("lena_color.bmp");
+        resim->writeInfo("lena_color.bmp");
+
+        std::unique_ptr<IMAGE> resim = std::make_unique<IMAGE>();
+        resim->ImageRead("lena_color.bmp");
+        resim->writeInfo("lena_color.bmp");
+
+        int x = 100; // X koordinatı
+        int y = 150; // Y koordinatı
+        BYTE newR = 255; // Yeni kırmızı bileşen değeri
+        BYTE newG = 0;   // Yeni yeşil bileşen değeri
+        BYTE newB = 0;   // Yeni mavi bileşen değeri
+
+        resim->changePixelColor(x, y, newR, newG, newB);
+
         resim->ImageWrite("test_filter.bmp");
-        resim->~IMAGE();
+
+        return 0;
+    
+
+
+        resim->ImageWrite("test_filter.bmp");
+
     }
 
     void IMAGE::ImageRead(std::string filename){
@@ -128,7 +134,7 @@
     }
     void IMAGE::ImageWrite(std::string filename){
         std::ofstream outputFile(filename,std::ios::binary);
-        if(!outputFile) {printf("File is not found..");exit(1);}
+        if(!outputFile) {printf("File is not found.."); exit(1);}
         outputFile.write(reinterpret_cast<char*>(&bmpfh), sizeof(BMPFH));
         outputFile.write(reinterpret_cast<char*>(&bmpih), sizeof(BMPIH));
         outputFile.write(reinterpret_cast<char*>(palet.get()), 4 * this->palettesize);
@@ -155,72 +161,23 @@
 	printf("bi color used		:%d\n",this->bmpih.biclused);
 	printf("bi color imp.		:%d\n",this->bmpih.biclimp);
     }
-    void IMAGE::setZero(){
-        int h = this->bmpih.bih;
-        for(int i=0; i<h; i++)
-            for(DWORD j=0; j<rowsize; j++) this->data[i*rowsize+j]=0;
-    }
-    void IMAGE::histogram(std::vector<double> &hist){
-        for(DWORD i = 0; i < this->size ;i++)
-            hist[this->data[i]]++;
-        std::cout << "check" << std::endl;
-    }
-    void IMAGE::histogram(){
-        std::vector<int> hist(this->palettesize);
-        for (size_t i = 0; i < this->palettesize; i++)
-            hist[this->data[i]]++;
-        std::ofstream outputxt("hist.txt");
-        if (!outputxt) {std::cerr << "Dosya açılamadı." << std::endl;exit(1);}
-        for (size_t i = 0; i < this->palettesize; i++)
-            outputxt << i << "\t" << hist[i] << "\n";
-        outputxt.close();
-        
-    }
-    void IMAGE::histogramEqualization(){
-        std::vector<double> hist(this->palettesize,0);
-        int t=0;
-        std::cout << "check 2" << hist[100] <<  std::endl;
-
-        this->histogram(hist);
-        for (size_t i = 0; i < this->palettesize; i++)
-            hist[i] /= this->size;
-        for (size_t i = 0; i < this->palettesize; i++)
-        {
-            t+=hist[i];
-            hist[i] = (int)(t*this->palettesize);
-        }
-        for (size_t i = 0; i < this->palettesize; i++)
-            this->data[i] = (BYTE)hist[this->data[i]];
-    }
-    void IMAGE::negativeImage(){
-        for(DWORD i=0; i < this->size; i++)
-            this->data[i] = pow(2,this->bmpih.bibitcount)-1-this->data[i];
-    }
-    void IMAGE::changeColorPalette(){
-        for(DWORD i = 0; i < this->palettesize; i++){
-            this->palet[i].rgbblue = pow(2,this->bmpih.bibitcount) - 1- this->palet[i].rgbblue;
-            this->palet[i].rgbgreen = pow(2,this->bmpih.bibitcount) - 1- this->palet[i].rgbgreen;
-            this->palet[i].rgbred = pow(2,this->bmpih.bibitcount) - 1- this->palet[i].rgbred;
-        }
-    }
-    BYTE IMAGE::meanofmaxmin(){
-        return *(std::min_element(this->data.get(), this->data.get() + this->size)) +
-               *(std::max_element(this->data.get(), this->data.get() + this->size)) / 2;
-    }
-    BYTE IMAGE::mean(){
-        return std::accumulate(this->data.get(), this->data.get() + this->size,0)/size;        
-    }
-    BYTE IMAGE::median(){
-        retrun 0;
-    }
-    void IMAGE::thresholdImage(){
-        BYTE t = mean();
-
-    }
-    void IMAGE::lowpassFilter(IMAGE *image,double filter[3][3]){
-                
-
+    void IMAGE::changePixelColor(int x, int y, BYTE newR, BYTE newG, BYTE newB)
+{
+    if (x < 0 || x >= bmpih.biw || y < 0 || y >= bmpih.bih)
+    {
+        std::cerr << "Invalid pixel coordinates." << std::endl;
+        return;
     }
 
+    int pixelOffset = y * rowsize + x * 3; // Pikselin bellek içindeki konumu
+
+    for(int i = 0; i < 3; i++){
+
+    }
+    // Verilen x ve y koordinatındaki pikselin renklerini değiştir
+    data[pixelOffset + 2] = newR; // Kırmızı bileşen
+    data[pixelOffset + 1] = newG; // Yeşil bileşen
+    data[pixelOffset] = newB;     // Mavi bileşen
+}
 
 
