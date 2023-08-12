@@ -255,7 +255,6 @@ void thresholdImage(IMAGE *image)
 	printf("Threshold value:%d\n",t);
 	thresholdImage(image,t);
 }
-
 void lowpassFilter(IMAGE *image,double filter[3][3])
 {
 	int h,w,rowsize,i,j,k,l;

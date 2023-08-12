@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <conio.h>
 #pragma pack(1)
 typedef unsigned char BYTE;//1 bytes of memory
 typedef unsigned short WORD;//2 bytes of memory
@@ -99,24 +98,67 @@ void ImageWrite(IMAGE *image,char *filename)
 	fwrite(image->data,size,1,fp);//write image data to the file
 	fclose(fp);//closes the file 
 }
-void convert_24_to_8_bit(IMAGE *image,char *fname){
-	IMAGE *new_image=(IMAGE*)malloc(sizeof(IMAGE));
+void make_gray_24_bit(IMAGE *image){
+	int i,rowsize,size;
+
+	rowsize=(image->bmpih.biw*24+31)/32*4;//a row size of image is calculated 
+	size=rowsize*image->bmpih.bih;//all size of image is calculated
+
+	for(i=0;i<size;i+=3){
+		BYTE gray = (BYTE)(image->data[i]*0.3 + image->data[i+1]*0.59 + image->data[i+2]*0.11);
+		image->data[i] = gray;
+		image->data[i+1] = gray;
+		image->data[i+2] = gray;
+	}
+
 	
+
+}
+IMAGE* convert_24_to_8_bit(IMAGE *image,char *fname){
+	IMAGE *new_image;
+
+	DWORD size1 = image->bmpih.bih * image->bmpih.biw;
+	DWORD bfOffbits_ = 256*4+ image->bmpfh.bfOffbits;
+	new_image = (IMAGE *) malloc(size1 + bfOffbits_);
+
+	new_image->bmpfh=image->bmpfh;
+	new_image->bmpih=image->bmpih;
+
+	new_image->bmpfh.bfOffbits = bfOffbits_;
+	new_image->bmpfh.bfsize = size1 + bfOffbits_;
+	new_image->bmpih.bisizeimage = size1;
 	FILE *fp;
-	int r=256,rowsize,size;
+	int r=256,rowsize,size,i;
 	
-	fp=fopen(filename,"wb");//opens the file );exit(1);}
+	fp=fopen(fname,"wb");//opens the file );exit(1);}
 	if(fp==NULL) {printf("Fie opening error!");exit(1);}
 	new_image->bmpih.bibitcount = 8;
 
-	owsize=(image->bmpih.biw*8+31)/32*4;//a row size of image is calculated 
+
+	rowsize=(image->bmpih.biw*8+31)/32*4;//a row size of image is calculated 
 	size=rowsize*image->bmpih.bih;//all size of image is calculated
 	new_image->palet=(PALET *) malloc(4*r);
-	
 
+	new_image->data = (BYTE*)malloc(size);
+	for(i=0;i<256;i++){
+		new_image->palet[i].rgbblue = i;
+		new_image->palet[i].rgbgreen = i;
+		new_image->palet[i].rgbred = i;
+		new_image->palet[i].rgbreserved = 0;
+	}
 
+	for(i=0;i<size;i++)
+		new_image->data[i]=image->data[i*3];
+
+	fwrite(&new_image->bmpfh,sizeof(BMPFH),1,fp);//reads bitmap file header from the file and set to bmph
+    fwrite(&new_image->bmpih,sizeof(BMPIH),1,fp);//reads bitmap info header from the file and set to bmpih
+	fwrite(new_image->palet,sizeof(BYTE),4*r,fp);//read color palette from image to the memory
+	fwrite(new_image->data,size,1,fp);//reads image data from file and sets to image->data
+	fclose(fp);
+
+	return new_image;
 }
-	writeInfo(IMAGE *image,char *fname)
+void	writeInfo(IMAGE *image,char *fname)
 {
 	printf("--------Info about %s  image file\n",fname);
 	printf("bfType value		:%c%c\n",image->bmpfh.bftype1,image->bmpfh.bftype2);
@@ -140,7 +182,11 @@ int main()
 {
 	IMAGE *image=(IMAGE*)malloc(sizeof(IMAGE));
 	image=ImageRead(image,"lena_color.bmp");
+	writeInfo(image,"lena_color.bmp");
+	make_gray_24_bit(image);
 	ImageWrite(image,"equ.bmp");
+	IMAGE* new_image = convert_24_to_8_bit(image,"equ.bmp");
+	writeInfo(new_image,"equ.bmp");
 	free(image);   
 	
 	return 0;
