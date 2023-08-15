@@ -119,7 +119,7 @@ IMAGE* convert_24_to_8_bit(IMAGE *image,char *fname){
 
 	DWORD size1 = image->bmpih.bih * image->bmpih.biw;
 	DWORD bfOffbits_ = 256*4+ image->bmpfh.bfOffbits;
-	new_image = (IMAGE *) malloc(size1 + bfOffbits_);
+	new_image = (IMAGE *) malloc(si"ze1 + bfOffbits_);
 
 	new_image->bmpfh=image->bmpfh;
 	new_image->bmpih=image->bmpih;
