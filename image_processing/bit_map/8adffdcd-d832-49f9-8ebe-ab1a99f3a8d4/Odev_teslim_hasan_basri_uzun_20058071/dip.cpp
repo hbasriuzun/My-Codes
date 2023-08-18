@@ -119,7 +119,7 @@ IMAGE* convert_24_to_8_bit(IMAGE *image,char *fname){
 
 	DWORD size1 = image->bmpih.bih * image->bmpih.biw;
 	DWORD bfOffbits_ = 256*4+ image->bmpfh.bfOffbits;
-	new_image = (IMAGE *) malloc(si"ze1 + bfOffbits_);
+	new_image = (IMAGE *) malloc(size1 + bfOffbits_);
 
 	new_image->bmpfh=image->bmpfh;
 	new_image->bmpih=image->bmpih;
@@ -181,13 +181,14 @@ void	writeInfo(IMAGE *image,char *fname)
 int main()
 {
 	IMAGE *image=(IMAGE*)malloc(sizeof(IMAGE));
-	image=ImageRead(image,"lena_color.bmp");
-	writeInfo(image,"lena_color.bmp");
+	image=ImageRead(image,"parrots.bmp");
+	writeInfo(image,"parrots.bmp");
 	make_gray_24_bit(image);
 	ImageWrite(image,"equ.bmp");
 	IMAGE* new_image = convert_24_to_8_bit(image,"equ.bmp");
 	writeInfo(new_image,"equ.bmp");
 	free(image);   
+	free(new_image);
 	
 	return 0;
 }
