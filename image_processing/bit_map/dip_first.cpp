@@ -256,8 +256,8 @@ BYTE median1(BYTE *data,int h,int rowsize)
 		index=i;
 		for(j=i+1;j<h*rowsize;j++)
 		     if(data[j]<data[index]) index=j;
-		if(i!=index) swap(&data[i],&data[index]);
-		if(i%10000==0) printf("i:%d\n",i);
+				if(i!=index) swap(&data[i],&data[index]);
+					if(i%10000==0) printf("i:%d\n",i);
 	}
 	
 	return data[h*rowsize/2];
